@@ -6,6 +6,7 @@ Description:
 Usage:
  python old_people.py
 """
+
 import os
 import inspect 
 import sqlite3
@@ -35,7 +36,7 @@ def get_old_people():
     """
     con = sqlite3.connect(db_path)
     cur = con.cursor()
-
+    # Creates Query 
     get_old_people_query = """
         SELECT name, age FROM people
         WHERE age > 49;
@@ -52,18 +53,10 @@ def print_name_and_age(old_people_list):
     Args:
         name_and_age_list (list): (name, age) of people
     """
-    con = sqlite3.connect(db_path)
-    cur = con.cursor()
-    # Query the database for all information for all people.
-    cur.execute('SELECT name, age FROM people')
-    # Fetch all query results.
-    # The fetchall() method returns a list, where each list item
-    # is a tuple containing data from one row in the people table.
-    all_people = cur.fetchall()
-    # Pretty print (pprint) outputs data in an easier to read format.
-    pprint(all_people)
-    con.commit()
-    con.close()
+    # Prints names and ages of people
+    for n in old_people_list:
+        print(f'{n[0]} is {n[1]} years old.')
+
     return
 
 def save_name_and_age_to_csv(old_people_list, old_people_csv):
@@ -73,6 +66,7 @@ def save_name_and_age_to_csv(old_people_list, old_people_csv):
         name_and_age_list (list): (name, age) of people
         csv_path (str): Path of CSV file
     """
+    # Creates dataframe and saves it to csv
     report_df = pd.DataFrame(old_people_list)
     report_header = ('name', 'age')
     report_df.to_csv(old_people_csv, index=False, header=report_header)
